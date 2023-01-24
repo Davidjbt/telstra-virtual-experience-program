@@ -7,16 +7,16 @@ import javax.persistence.Id;
 @Entity
 public class SimCard {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue()
     private Long id;
     private String iccid;
     private String customerEmail;
-    private Boolean active;
+    private boolean active;
 
     public SimCard() {
     }
 
-    public SimCard(String iccid, String customerEmail, Boolean active) {
+    public SimCard(String iccid, String customerEmail, boolean active) {
         this.iccid = iccid;
         this.customerEmail = customerEmail;
         this.active = active;
@@ -46,11 +46,11 @@ public class SimCard {
         this.customerEmail = customerEmail;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }

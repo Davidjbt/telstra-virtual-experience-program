@@ -6,10 +6,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SIMCard {
     private String iccid;
     private String customerEmail;
+    private boolean active;
 
-    public SIMCard(String iccid, String customerEmail) {
+    public SIMCard(String iccid, String customerEmail, boolean active) {
         this.iccid = iccid;
         this.customerEmail = customerEmail;
+        this.active = active;
     }
 
     public String getIccid() {
@@ -26,5 +28,13 @@ public class SIMCard {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
