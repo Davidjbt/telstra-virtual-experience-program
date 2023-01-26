@@ -1,20 +1,19 @@
 package stepDefinitions;
 
 import au.com.telstra.simcardactivator.SimCardActivator;
-import entity.SimCard;
+import au.com.telstra.simcardactivator.foundation.SimCard;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
-import json.SIMCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -23,35 +22,32 @@ public class SimCardActivatorStepDefinitions {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private SIMCard simCard;
+    private SimCard simCard;
 
-    @Given("a working SIM Card")
-    public void workingSimCard() {
-        simCard = new SIMCard("1255789453849037777", "test1@gmail.com", false);
+    @Given("a functional sim card")
+    public void aFunctionalSimCard() {
+        simCard = new SimCard("1255789453849037777", "horatio.yakima@groovemail.com", false);
     }
 
-    @Given("a not working SIM Card")
-    public void notWorkingSimCard() {
-        simCard = new SIMCard("8944500102198304826", "test2@gmail.com", false);
+    @Given("a broken sim card")
+    public void aBrokenSimCard() {
+        simCard = new SimCard("8944500102198304826", "notorious.criminal@gonepostal.com", false);
     }
 
-    @When("a request to activate a SIM card is submitted")
-    public void aRequestToActiveANewSimCardIsSubmitted() {
-        this.restTemplate.postForObject("http://localhost:8080/activateSIM", simCard, String.class);
+    @When("a request to activate the sim card is submitted")
+    public void aRequestToActivateTheSimCardIsSubmitted() {
+        this.restTemplate.postForObject("http://localhost:8080/activate", simCard, String.class);
     }
 
-    @Then("the sim card activates and its state is saved to the database")
-    public void theSimCardActivatesAndItsStateIdToTheDatabase() {
-        var simCard = this.restTemplate.getForObject("http://localhost:8080/querySIM?id={id}", SimCard.class, 1);
+    @Then("the sim card is activated and its state is recorded to the database")
+    public void theSimCardIsActivatedAndItsStateIsRecordedToTheDatabase() {
+        var simCard = this.restTemplate.getForObject("http://localhost:8080/query?simCardId={simCardId}", SimCard.class, 1);
         assertTrue(simCard.getActive());
     }
 
-    @Then("the sim card fails to activate and its state is saved to the database")
+    @Then("the sim card fails to activate and its state is recorded to the database")
     public void theSimCardFailsToActivateAndItsStateIsRecordedToTheDatabase() {
-        var simCard = this.restTemplate.getForObject("http://localhost:8080/querySIM?id={id}", SimCard.class, 2);
+        var simCard = this.restTemplate.getForObject("http://localhost:8080/query?simCardId={simCardId}", SimCard.class, 2);
         assertFalse(simCard.getActive());
     }
-
-
-
 }

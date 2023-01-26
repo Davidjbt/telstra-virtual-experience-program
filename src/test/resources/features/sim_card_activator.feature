@@ -1,11 +1,12 @@
-Feature: SimCard Activator
+Feature: Sim Card Activator
+  Describes the behavior of the Sim card activation microservice
 
-  Scenario: Working SIM cards activates successfully
-    Given a working SIM Card
-    When  a request to activate a SIM card is submitted
-    Then the sim card activates and its state is saved to the database
-  Scenario: Not working SIM cards fail to activate
-    Given a not working SIM Card
-    When a request to activate a SIM card is submitted
-    Then the sim card fails to activate and its state is saved to the database
+  Scenario: Functional sim cards activate successfully
+    Given a functional sim card
+    When a request to activate the sim card is submitted
+    Then the sim card is activated and its state is recorded to the database
 
+  Scenario: Broken sim cards fail to activate
+    Given a broken sim card
+    When a request to activate the sim card is submitted
+    Then the sim card fails to activate and its state is recorded to the database
